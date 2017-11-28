@@ -25,7 +25,7 @@ reqigong_img = ~qigong_img;
 % MAE 
 fprintf('---------Reverse color----------------------------\n');
 m_mae = MAE(qigong_img, reqigong_img);
-fprintf('MAE : %f \n', m_mean);
+fprintf('MAE : %f \n', m_mae);
 
 cr = CoverageRate(qigong_img, reqigong_img);
 fprintf('CR: %f \n', cr);
@@ -38,11 +38,13 @@ fprintf('---------Same image----------------------------\n');
 
 qigong_img2 = qigong_img;
 m_mae = MAE(qigong_img, qigong_img2);
-fprintf('MAE : %f \n', m_mean);
+fprintf('MAE : %f \n', m_mae);
 
 cr = CoverageRate(qigong_img, qigong_img2);
 fprintf('CR: %f \n', cr);
 
+ssimval = ssim(qigong_img*255, qigong_img2*255);
+fprintf('SSIM: %f \n', ssimval);
 
 
 
