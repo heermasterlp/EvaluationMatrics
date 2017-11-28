@@ -1,0 +1,58 @@
+% img_file = 'matrics.jpg';
+% img = imread(img_file);
+% 
+% qigong_img = img(:, 1: 256);
+% kai_img = img(:, 257: 512);
+% 
+% imwrite(qigong_img, 'qigong.png');
+% imwrite(kai_img, 'kai.png');
+
+%figure; imshow(qigong_img);
+
+qigong_path = 'qigong.png';
+
+qigong_img = imread(qigong_path);
+
+% grayscale to binary image
+qigong_img = imbinarize(qigong_img);
+
+% figure; imshow(qigong_img);
+
+reqigong_img = ~qigong_img;
+% figure; imshow(reqigong_img);
+
+% MAE 
+fprintf('---------Reverse color----------------------------\n');
+m_err = reqigong_img - qigong_img;
+m_abs = abs(m_err);
+m_mean = mean2(m_abs);
+
+fprintf('MAE : %f \n', m_mean);
+
+% CR 1 = white and 0 = black
+num_valid = sum(sum(qigong_img == 0));
+fprintf('Valid pixels: %d \n', num_valid);
+
+num_less = 0;
+num_over = 0;
+for i = 1: size(qigong_img, 1)
+    for j = 1: size(qigong_img, 2)
+        % less
+        if qigong_img(j, i) == 0 && reqigong_img(j, i) == 1
+            num_less = num_less + 1;
+        end
+        
+        % over
+        if qigong_img(j, i) == 1 && reqigong_img(j, i) == 0
+            num_over = num_over + 1;
+        end
+    end
+end
+
+fprintf('Less pixels: %d \n', num_less);
+fprintf('Over pixels: %d \n', num_over);
+
+cr = 100.0 * (num_valid - num_less - num_over) / num_valid;
+fprintf('CR: %f \n', cr);
+
+fprintf('---------Same image----------------------------\n');
